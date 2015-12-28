@@ -1,0 +1,20 @@
+#!/bin/sh
+
+# Enforce Static Analysis and Linting of code before it is pushed
+# to the origin repository
+#
+# To enable this hook, copy or symlink this hook into .git/hooks
+
+# This assumes Bundler binary Is installed and ready for execution
+
+# Install Ruby Gems
+bundle install --path ../support/vendor --without integration development
+
+# Install Cookbook Dependencies
+bundle exec berks install
+
+# Execute Rubocop
+bundle exec rubocop
+
+# Execute Food critic
+bundle exec foodcritic -f any .
